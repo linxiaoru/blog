@@ -1,7 +1,7 @@
 ---
 title: react-native 热更新之 CodePush 使用小结
 date: 2017-08-23 22:58:23
-tags: React Native
+tags: ['React Native', 'CodePush']
 ---
 #### 先从一个需求说起
 需求是这样的：为满足线上版本紧急更新重要内容（包括 JS/HTML/CSS/IMAGE 等），使用 CodePush 进行热更新， 当有新的更新内容需要更新时，客户端弹出自定义的更新提示弹窗，用户可以选择点击立即更新进行更新，或者点击关闭按钮忽略这次更新。
