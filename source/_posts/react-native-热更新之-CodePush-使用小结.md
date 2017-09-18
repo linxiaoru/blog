@@ -104,6 +104,99 @@ codePushStatusDidChange 用来跟踪更新状态，codePushDownloadDidProgress �
 #### 完成
 以上就是我完成这个需求的思路及方法，仔细阅读文档，查看文档实例，总会有很多的实现的方法，随着之后的项目代码优化，可能有更好的实现方式。
 
+#### 方案优化
+2017.09.18 针对需求不变的情况下，在使用了 `checkForUpdate（）` 方法后，获取是否有新的内容需要更新，当有需要更新时，弹出更新提示，然后等待用户点击立即更新按钮，这个时候可以直接使用 `download()` 方法，下载更新包，更新完毕后，用户点击立即重启完成更新按钮后，`install` 安装包。
+
+这个方案主要是取消了使用 `sync()` 方法，`download（）` 方法中同样也可以获取下载进度，也不再去根据状态来判断是否更新完成，实例修改后如下
+```javascript
+componentWillMount（）{
+ CodePush.checkForUpdate(Config.codePushKey)
+          .then((update) => {
+            this.apk_package = update;  // 更新状态等信息
+            if (update) {
+              // 有可用的更新，这时进行一些控制更新提示弹出层的的操作
+            }else{
+              // 没有可用的更新
+            }
+          });
+}
+
+  _updateCodePush = () => {
+    this.apk_package.download((progress) => {
+      // 更新进度换算
+      let percent = parseInt(progress.receivedBytes / progress.totalBytes * 100);
+      this.setState({
+        codePushProgress: '更新进度:' + percent + '%',
+      });     
+    }).then((localPackage)=>{
+      this.apk_localPackage = localPackage;   // 下载完毕了，这时候已经获取了更新包
+      // 如若不需要用户进行是否立即重启生效更新的操作，可以直接进行 install
+    });
+  }
+
+  _installPagage = () => {
+    // 待用户同意立即重启以生效更新后，进行 install 操作，install 方法内置了安装后立即重启的方法
+     this.apk_localPackage.install(CodePush.InstallMode.IMMEDIATE);
+  }
+```
+### CodePush 常用命令
+1. 查看更新历史
+
+    > code-push deployment h myApp Staging
+    或者    
+    > code-push deployment history myApp Production
+
+2. 查看应用key
+
+    > code-push deployment ls myApp -k
+    或者
+    > code-push deployment list myApp -k
+
+3. 与账号相关的命令
+    - 在账号里面添加一个新的app
+        > code-push app add myNewApp
+
+    - 在账号里移除一个app
+        > code-push app remove myApp        
+        或者
+        > code-push app rm myApp
+
+    - 重命名一个存在app
+        > code-push app rename myApp myAppNewName
+
+    - 列出账号下面的所有app
+        > code-push app list
+        或者
+        > code-push app ls
+
+    - 把app的所有权转移到另外一个账号
+        > code-push app transfer
+4. 推送更新内容
+
+    code-push release-react <appName> <platform>
+
+示例(默认走```Staging```分支):
+> code-push release-react MyApp ios    
+> code-push release-react MyApp-Android android
+ 
+指定部署分支名称 
+> code-push release-react MyApp android -d Production
+
+指定开发版本或发布版本(默认false)
+> code-push release-react MyApp windows --dev
+
+强制更新描述内容 
+> code-push release-react MyApp ios -m --description "Modified the header color"
+
+更新一个1/4用户的开发版本
+> code-push release-react MyApp-Android android --rollout 25% --dev true
+
+更新1.1.0版本的所有用户
+> code-push release-react MyApp-Android android --targetBinaryVersion "~1.1.0" 
+或者  
+> code-push release-react MyApp-Android android --t "~1.1.0"
+
+
 #### 参考链接
 - [Code Push 热更新使用详细说明和教程](http://bbs.reactnative.cn/topic/725/code-push-%E7%83%AD%E6%9B%B4%E6%96%B0%E4%BD%BF%E7%94%A8%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E%E5%92%8C%E6%95%99%E7%A8%8B)
 
