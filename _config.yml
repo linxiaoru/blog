@@ -3,11 +3,11 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: 林小如个人博客
-subtitle: 谢谢你看到我
-description:
-author: 林小如
-language: zh-CN
+title: Cheryl Lin
+# subtitle: 谢谢你看到我
+description: 反正竞赛还很长
+author: Cheryl
+language: zh-Hans
 timezone: Asia/Shanghai
 
 # URL
@@ -72,7 +72,7 @@ pagination_dir: page
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: yilia
+theme: next
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
