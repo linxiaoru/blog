@@ -5,6 +5,13 @@
   "hexo": {
     "version": "3.3.9"
   },
+  "scripts": {
+    "new": "hexo new post '新的post'",
+    "start": "hexo server",
+    "clean": "hexo clean",
+    "generate": "hexo generate",
+    "publish": "hexo deploy"
+  },
   "dependencies": {
     "hexo": "^3.2.0",
     "hexo-deployer-git": "^0.3.1",
