@@ -7,7 +7,6 @@ title: Cheryl Lin
 # subtitle: 谢谢你看到我
 description: 反正竞赛还很长
 author: Cheryl
-language: zh-Hans
 timezone: Asia/Shanghai
 
 # URL
@@ -72,7 +71,7 @@ pagination_dir: page
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: next
+theme: next-reloaded
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
